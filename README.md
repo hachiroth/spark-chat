@@ -1,9 +1,2 @@
-# monorepo-ts-express
-
-A typescript monorepo with express.
-
-# Usage
-
-```bash
-pnpm install
-```
+# spark-chat
+Spark Lite AI web chat.
