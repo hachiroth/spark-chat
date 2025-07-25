@@ -1,0 +1,29 @@
+{
+  "header": {
+    "code": 0,
+    "message": "Success",
+    "sid": "cht000c1bfd@hu1983fceedba044b322",
+    "status": 2
+  },
+  "payload": {
+    "choices": {
+      "status": 2,
+      "seq": 9,
+      "text": [
+        {
+          "content": "您的问题。",
+          "role": "assistant",
+          "index": 0
+        }
+      ]
+    },
+    "usage": {
+      "text": {
+        "question_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 32,
+        "total_tokens": 32
+      }
+    }
+  }
+}

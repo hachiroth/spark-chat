@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User1 - Spark Lite Chat Client</title>
+</head>
+
+<body>
+  <input type="text" placeholder="Chat with Spark AI" id="input-msg" style="width: 300px;" />
+  <button type="button" id="btn-send">Send</button>
+
+  <div id="chat-log" style="margin-top: 20px; max-width: 500px; font-family: monospace;"></div>
+
+  <script>
+    fetch('http://localhost:3000/api/conversations/68833d2475209a78735c45a4')
+    const uid = '68833c4a5a7d01fc6e363d33' 
+    let ws = null
+
+    const input = document.getElementById('input-msg')
+    const btn = document.getElementById('btn-send')
+    const chatLog = document.getElementById('chat-log')
+
+    // 连接 WebSocket，返回 Promise 方便等待连接成功
+    function connect() {
+      return new Promise((resolve, reject) => {
+        ws = new WebSocket(`ws://localhost:3000?uid=${uid}&conversationId=68833d2475209a78735c45a4`)
+
+        ws.onopen = () => {
+          logToScreen('✅ Connected to server')
+          resolve()
+        }
+
+        ws.onerror = (err) => {
+          logToScreen('❌ WebSocket error')
+          reject(err)
+        }
+
+        ws.onmessage = (event) => {
+          try {
+            const msg = JSON.parse(event.data)
+            if (msg.role === 'assistant') {
+              logToScreen(`💬 Spark: ${msg.content}`)
+            } else if (msg.error) {
+              logToScreen(`⚠️ Error: ${msg.error}`)
+            } else {
+              logToScreen(`📩 Msg: ${JSON.stringify(msg)}`)
+            }
+          } catch {
+            logToScreen('⚠️ Received invalid JSON')
+          }
+        }
+
+        ws.onclose = () => {
+          logToScreen('🔌 Connection closed')
+          ws = null
+        }
+      })
+    }
+
+    // 把消息写到页面上
+    function logToScreen(msg) {
+      const div = document.createElement('div')
+      div.textContent = msg
+      chatLog.appendChild(div)
+      chatLog.scrollTop = chatLog.scrollHeight
+    }
+
+    // 发送消息
+    async function sendMessage() {
+      const msg = input.value.trim()
+      if (!msg) return
+
+      if (!ws || ws.readyState !== WebSocket.OPEN) {
+        try {
+          await connect()
+        } catch (err) {
+          logToScreen('❌ Failed to connect to server')
+          return
+        }
+      }
+
+      // 发给服务器的消息必须是 JSON 对象
+      const payload = {
+        role: 'user',
+        content: msg,
+      }
+
+      ws.send(JSON.stringify(payload))
+      logToScreen(`🧑 You: ${msg}`)
+
+      input.value = ''
+      input.focus()
+    }
+
+    btn.onclick = sendMessage
+
+    // 回车也发送
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage()
+      }
+    })
+  </script>
+</body>
+
+</html>
