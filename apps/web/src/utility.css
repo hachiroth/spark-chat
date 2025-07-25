@@ -1,0 +1,32 @@
+@utility abs-c {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+@utility container {
+  @apply w-full max-w-4xl h-full mx-auto;
+}
+
+@utility scroll-area {
+  --s: transparent;
+  transition: --s 0.5s ease;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 8px !important;
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    width: 8px !important;
+    background: var(--s);
+    border-radius: 999px;
+  }
+  &:hover {
+    --s: rgba(0, 0, 0, 0.2);
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    --s: rgba(0, 0, 0, 0.3);
+  }
+}
+
+@utility scroll-gutter {
+  scrollbar-gutter: stable both-edges;
+}

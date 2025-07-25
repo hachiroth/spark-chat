@@ -1,4 +1,7 @@
 {
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   // File nesting
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {

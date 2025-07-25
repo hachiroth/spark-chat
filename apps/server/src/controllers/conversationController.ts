@@ -16,7 +16,7 @@ export async function getHistories(uid: string, conversationId: string) {
 
 export const resume: RequestHandler = expressAsyncHandler(async (req, res) => {
   const uid = req.session.uid || "68833c4a5a7d01fc6e363d33"
-  const conversationId = req.params.conversationId
+  const conversationId = req.params.conversationId || "68833d2475209a78735c45a4"
 
   const conversation = await Conversation.findById(conversationId)
   const histories = await getHistories(uid,conversationId)

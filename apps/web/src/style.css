@@ -1,0 +1,16 @@
+@import "tailwindcss";
+@plugin "flyonui" {
+  themes: dark;
+  exclude: scrollbar;
+}
+@plugin "@iconify/tailwind4";
+@import "./utility.css";
+
+html,
+body {
+  @apply bg-base-100 overflow-x-hidden font-mono;
+}
+
+#app {
+  @apply w-full h-screen relative flex justify-center items-center;
+}
